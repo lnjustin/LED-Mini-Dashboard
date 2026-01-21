@@ -62,12 +62,12 @@ import java.util.regex.Matcher
 @Field static final String Version = '1.2'
 
 definition(
-    name: 'LED Mini-Dashboard Topic',
+    name: 'LED Mini-Dash Topic',
     namespace: 'lnjustin',
-    parent: 'lnjustin:LED Mini-Dashboard',
+    parent: 'lnjustin:LED Mini-Dash',
     author: 'Jonathan Bradshaw, lnjustin',
-    description: 'LED Mini-Dashboard Child',
-    importUrl: 'https://raw.githubusercontent.com/bradsjm/hubitat-drivers/main/LedMiniDashboard/LedDashboardChild.groovy',
+    description: 'LED Mini-Dash Child',
+    importUrl: 'https://raw.githubusercontent.com/lnjustin/LED-Mini-Dashboard/refs/heads/main/LedDashboardChild.groovy',
     iconUrl: '',
     iconX2Url: '',
     singleThreaded: false
@@ -1891,12 +1891,12 @@ private void setDeviceColor(final DeviceWrapper device, final Map config) {
 }
 
 /**
- * Provides a wrapper around the ledEffect driver methods for the Inovelli Blue devices.
+ * Provides a wrapper around the ledEffect driver methods for the Inovelli Gen 3 devices.
  * This method translates the values in the config map to the appropriate values for the device.
  * @param device the device to update
  * @param config the configuration to update the device with
  */
-private void setInovelliBlueLedEffect(final DeviceWrapper device, final Map config) {
+private void setInovelliGen3Effect(final DeviceWrapper device, final Map config) {
     int color = 0, duration = 0, effect = 0, level = 0
 
     // Calculate duration based on given unit and duration values, with a max value of 255
@@ -2083,7 +2083,7 @@ private void subscribeSwitchAttributes() {
  */
 private void updateDeviceLedState(final DeviceWrapper device, final Map config) {
     if (device.hasCommand('ledEffectOne')) {
-        setInovelliBlueLedEffect(device, config)
+        setInovelliGen3Effect(device, config)
     } else if (device.hasCommand('startNotification')) {
         setInovelliRedGen2Effect(device, config)
     } else if (device.hasCommand('setConfigParameter')) {
@@ -2328,6 +2328,48 @@ private Object runClosure(final Closure template, final Map ctx) {
  *      effectsAll - Map of effects that can be selected from if led choice is set to 'All'
  */
 @Field static final Map<String, Map> SupportedSwitchTypes = [
+    'Inovelli Blue mmWave Switch' : [
+        title     : 'Inovelli Blue Series Presence Dimmer Switch VZM32-SN',
+        type      : 'device.InovellimmWaveDimmerBlueSeriesVZM32-SN',
+        leds      : [
+            'All': 'All LEDs',
+            '7': 'LED 7 (Top)',
+            '6': 'LED 6',
+            '5': 'LED 5',
+            '4': 'LED 4',
+            '3': 'LED 3',
+            '2': 'LED 2',
+            '1': 'LED 1 (Bottom)',
+            '5,6,7': 'Top Half LEDs',
+            '3,4,5': 'Middle LEDs',
+            '1,2,3': 'Bottom Half LEDs',
+            'var': 'Variable LED'
+        ],
+        effects   : ['255': 'Stop Effect', '1': 'Solid', '2': 'Fast Blink', '3': 'Slow Blink', '4': 'Pulse', '5': 'Chase', '6': 'Falling', '7': 'Rising', '8': 'Aurora', '0': 'LED Off', 'var': 'Variable Effect'],
+        effectsAll: ['255': 'Stop Effect', '1': 'Solid', '2': 'Fast Blink', '3': 'Slow Blink', '4': 'Pulse', '5': 'Chase', '6': 'Open/Close', '7': 'Small-to-Big', '8': 'Aurora', '9': 'Slow Falling', '10': 'Medium Falling', '11': 'Fast Falling',
+                     '12': 'Slow Rising', '13': 'Medium Rising', '14': 'Fast Rising', '15': 'Medium Blink', '16': 'Slow Chase', '17': 'Fast Chase', '18': 'Fast Siren', '19': 'Slow Siren', '0': 'LEDs Off', 'var': 'Variable Effect']
+    ],
+    'Inovelli Red mmWave Switch' : [
+        title     : 'Inovelli Red Series Presence Dimmer Switch VZW32-SN',
+        type      : 'device.InovellimmWaveDimmerRedSeriesVZW32-SN',
+        leds      : [
+            'All': 'All LEDs',
+            '7': 'LED 7 (Top)',
+            '6': 'LED 6',
+            '5': 'LED 5',
+            '4': 'LED 4',
+            '3': 'LED 3',
+            '2': 'LED 2',
+            '1': 'LED 1 (Bottom)',
+            '5,6,7': 'Top Half LEDs',
+            '3,4,5': 'Middle LEDs',
+            '1,2,3': 'Bottom Half LEDs',
+            'var': 'Variable LED'
+        ],
+        effects   : ['255': 'Stop Effect', '1': 'Solid', '2': 'Fast Blink', '3': 'Slow Blink', '4': 'Pulse', '5': 'Chase', '6': 'Falling', '7': 'Rising', '8': 'Aurora', '0': 'LED Off', 'var': 'Variable Effect'],
+        effectsAll: ['255': 'Stop Effect', '1': 'Solid', '2': 'Fast Blink', '3': 'Slow Blink', '4': 'Pulse', '5': 'Chase', '6': 'Open/Close', '7': 'Small-to-Big', '8': 'Aurora', '9': 'Slow Falling', '10': 'Medium Falling', '11': 'Fast Falling',
+                     '12': 'Slow Rising', '13': 'Medium Rising', '14': 'Fast Rising', '15': 'Medium Blink', '16': 'Slow Chase', '17': 'Fast Chase', '18': 'Fast Siren', '19': 'Slow Siren', '0': 'LEDs Off', 'var': 'Variable Effect']
+    ],
     'Inovelli Blue Switch' : [
         title     : 'Inovelli Dimmer 2-in-1 Blue Series VZM31-SN',
         type      : 'device.InovelliDimmer2-in-1BlueSeriesVZM31-SN',

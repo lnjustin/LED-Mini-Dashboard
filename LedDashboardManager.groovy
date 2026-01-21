@@ -1,6 +1,7 @@
 /**
  *  MIT License
  *  Copyright 2022 Jonathan Bradshaw (jb@nrgup.net)
+ *  Copyright 2026 lnjustin
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +28,12 @@
 */
 
 definition(
-    name: 'LED Mini-Dashboard',
-    namespace: 'nrgup',
-    author: 'Jonathan Bradshaw',
+    name: 'LED Mini-Dash',
+    namespace: 'lnjustin',
+    author: 'Jonathan Bradshaw, lnjustin',
     category: 'Lighting',
     description: 'Turn your switch LEDs into mini-dashboards',
-    importUrl: 'https://raw.githubusercontent.com/bradsjm/hubitat-drivers/main/LedMiniDashboard/LedDashboardManager.groovy',
+    importUrl: 'https://raw.githubusercontent.com/lnjustin/LED-Mini-Dashboard/refs/heads/main/LedDashboardManager.groovy',
     iconUrl: '',
     iconX2Url: '',
     installOnOpen: true,
@@ -53,18 +54,18 @@ Map mainPage() {
             paragraph getDescription()
         }
 
-        section('<b>LED Mini-Dashboard Topics:</b>') {
+        section('<b>LED Mini-Dash Topics:</b>') {
             app(
                 name: 'childApp',
-                appName: 'LED Mini-Dashboard Topic',
-                namespace: 'nrgup',
-                title: 'Add new LED Mini-Dashboard topic',
+                appName: 'LED Mini-Dash Topic',
+                namespace: 'lnjustin',
+                title: 'Add new LED Mini-Dash topic',
                 multiple: true
             )
         }
 
         section {
-            label title: '<b>Name this LED Mini-Dashboard Manager:</b>', width: 6
+            label title: '<b>Name this LED Mini-Das Manager:</b>', width: 6
         }
     }
 }
@@ -72,7 +73,7 @@ Map mainPage() {
 // called from child app to duplicate itself
 void duplicate(final Long appId) {
     final InstalledAppWrapper source = getChildAppById(appId)
-    final InstalledAppWrapper target = addChildApp('nrgup', 'LED Mini-Dashboard Topic', "${source.label} duplicate")
+    final InstalledAppWrapper target = addChildApp('lnjustin', 'LED Mini-Dash Topic', "${source.label} duplicate")
     log.info "duplicating ${source.label}"
     target.writeSettings(source.readSettings())
 }
