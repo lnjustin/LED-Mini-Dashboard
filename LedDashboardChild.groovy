@@ -44,7 +44,8 @@
  * v1.12: Bug fix for duration settings
  * v1.13: Bug fix for LZW31 color
  * v1.14: Add support for Inovelli VZW31-SN dimmer
- * v1.2: Add support for latest Inovelli devices
+ * v1.15: Add support for latest Inovelli devices
+ * v1.16: Add support for custom hsm rule alert
  *
  * Thanks to Mattias Fornander (@mfornander) for the original application concept
  */
@@ -59,7 +60,7 @@ import java.time.LocalTime
 import java.util.concurrent.ConcurrentHashMap
 import java.util.regex.Matcher
 
-@Field static final String Version = '1.2'
+@Field static final String Version = '1.16'
 
 definition(
     name: 'LED Mini-Dash Topic',
@@ -2709,6 +2710,20 @@ private Object runClosure(final Closure template, final Map ctx) {
         ],
         subscribe: 'hsmAlert',
         test     : { final Map ctx -> ctx.event.value in ctx.choice }
+    ],
+    'hsmRuleAlert'         : [
+        title    : 'HSM alert from custom monitoring rule ',
+        template : { final Map ctx -> "When alert triggered by Custom HSM Monitoring Rule: ${ctx.value}" },
+        inputs   : [
+            value     : [
+                title  : 'Custom Monitoring Rule Name',
+                type   : 'text',
+                width  : 4,
+            ],
+            delay: false
+        ],
+        subscribe: 'hsmAlert',
+        test     : { final Map ctx -> ctx.event.value == 'rule' && evaluateComparison(ctx.event.descriptionText as String, ctx.value as String, '=') }
     ],
     'hsmStatus'         : [
         title    : 'HSM arming status becomes',
